@@ -1,0 +1,1310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu - Let's Eat</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <a href="index.html" class="nav-logo">Let's<span>Eat</span></a>
+      <ul class="nav-links">
+        <li>
+          <a href="menu.html" class="active"
+            ><i class="fa-solid fa-utensils"></i> Menu</a
+          >
+        </li>
+        <li>
+          <a href="reserve.html"
+            ><i class="fa-solid fa-calendar"></i> Reserve</a
+          >
+        </li>
+        <li>
+          <a href="reviews.html"><i class="fa-solid fa-star"></i> Reviews</a>
+        </li>
+        <li>
+          <a href="#" class="nav-cta" id="navOrderBtn">
+            <i class="fa-solid fa-bag-shopping"></i> Order Now
+          </a>
+        </li>
+      </ul>
+      <button class="hamburger" id="hamburger">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <button class="mobile-close" id="mobileClose">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <a href="menu.html" onclick="closeMobile()" class="active">Menu</a>
+      <a href="reserve.html" onclick="closeMobile()">Reserve</a>
+      <a href="reviews.html" onclick="closeMobile()">Reviews</a>
+      <a
+        href="#"
+        onclick="
+          closeMobile();
+          toggleCart(true);
+        "
+        >Order Now</a
+      >
+    </div>
+
+    <!-- MENU HERO -->
+    <section class="menu-hero">
+      <h1>Our Crafted <span>Menu</span></h1>
+      <p>
+        Savor our chef-curated culinary items prepared fresh daily. From rich
+        aromatics to decadent desserts, search and customize your perfect dish.
+      </p>
+    </section>
+
+    <!-- SEARCH & CONTROLS STICKY BAR -->
+    <div class="menu-controls">
+      <div class="menu-controls-inner">
+        <!-- Search & Sort Row -->
+        <div class="search-sort-row">
+          <div class="search-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              class="search-input"
+              id="searchInput"
+              placeholder="Search for dishes, flavors, ingredients..."
+            />
+          </div>
+          <div class="sort-wrapper">
+            <span class="sort-label">Sort By:</span>
+            <select class="sort-select" id="sortSelect">
+              <option value="popularity">Popularity</option>
+              <option value="rating">Highest Rated</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Categories horizontal track -->
+        <div class="filter-categories" id="categoriesTrack">
+          <button class="filter-btn active" data-category="all">
+            All Items
+          </button>
+          <button class="filter-btn" data-category="biryani">Biryanis</button>
+          <button class="filter-btn" data-category="mains">Mains</button>
+          <button class="filter-btn" data-category="chinese">Chinese</button>
+          <button class="filter-btn" data-category="rolls">
+            Rolls & Snacks
+          </button>
+          <button class="filter-btn" data-category="desserts">Desserts</button>
+          <button class="filter-btn" data-category="juices">Beverages</button>
+        </div>
+
+        <!-- Filter Toggles Row -->
+        <div class="filter-toggles">
+          <button class="toggle-btn" data-type="veg">
+            <i class="fa-solid fa-leaf"></i> Veg Only
+          </button>
+          <button class="toggle-btn" data-type="spicy">
+            <i class="fa-solid fa-fire"></i> Spicy Only
+          </button>
+          <button class="toggle-btn" data-type="special">
+            <i class="fa-solid fa-award"></i> Chef's Special
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENU GRID -->
+    <section class="menu-page-container">
+      <div class="menu-page-grid" id="menuGrid">
+        <!-- JS-loaded food items cards go here -->
+      </div>
+    </section>
+
+    <!-- FLOATING CART BADGE -->
+    <div class="floating-cart" id="floatingCart" onclick="toggleCart(true)">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <span class="cart-count-badge" id="cartCount">0</span>
+    </div>
+
+    <!-- CART SIDE DRAWER -->
+    <div
+      class="drawer-backdrop"
+      id="cartBackdrop"
+      onclick="toggleCart(false)"
+    ></div>
+    <div class="cart-drawer" id="cartDrawer">
+      <div class="cart-header">
+        <h2><i class="fa-solid fa-cart-shopping"></i> Your Order</h2>
+        <button class="cart-close-btn" onclick="toggleCart(false)">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Items scroll container -->
+      <div class="cart-items-list" id="cartItemsList">
+        <!-- Rendered cart items or empty state -->
+      </div>
+
+      <!-- Checkout Summary Footer -->
+      <div class="cart-footer-summary">
+        <div class="promo-row">
+          <input
+            type="text"
+            class="promo-input"
+            id="promoInput"
+            placeholder="Promo Code (e.g. EAT100)"
+          />
+          <button class="promo-btn" id="promoBtn" onclick="applyPromo()">
+            Apply
+          </button>
+        </div>
+        <div class="summary-details">
+          <div class="summary-line">
+            <span>Subtotal</span>
+            <span id="subtotalVal">₹0</span>
+          </div>
+          <div class="summary-line">
+            <span>GST (5%)</span>
+            <span id="gstVal">₹0</span>
+          </div>
+          <div class="summary-line">
+            <span>Delivery Fee</span>
+            <span id="deliveryVal">₹0</span>
+          </div>
+          <div
+            class="summary-line"
+            id="discountRow"
+            style="display: none; color: #10b981"
+          >
+            <span>Discount (Promo)</span>
+            <span id="discountVal">-₹0</span>
+          </div>
+          <div class="summary-line total">
+            <span>Grand Total</span>
+            <span id="totalVal">₹0</span>
+          </div>
+        </div>
+        <button class="checkout-btn" onclick="triggerCheckout()">
+          Place Order <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- PRODUCT DETAIL MODAL -->
+    <div
+      class="modal-overlay"
+      id="detailModal"
+      onclick="closeDetailModal(event)"
+    >
+      <div class="modal-container">
+        <div class="modal-body">
+          <div class="modal-hero-img-wrap">
+            <img id="modalImg" src="" alt="" />
+            <button class="modal-close-btn" onclick="toggleDetailModal(false)">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="modal-content-inner">
+            <div class="modal-title-row">
+              <h2 id="modalName">Dish Title</h2>
+              <div class="card-rating" id="modalRating">★ 4.8</div>
+            </div>
+
+            <div class="modal-info-meta">
+              <span id="modalDiet"><span class="diet-dot"></span> Diet</span>
+              <span id="modalTime"
+                ><i class="fa-regular fa-clock"></i> 25 mins</span
+              >
+              <span id="modalSpicy"><i class="fa-solid fa-fire"></i> Mild</span>
+            </div>
+
+            <p class="modal-desc" id="modalDesc">
+              Nutritious description goes here...
+            </p>
+
+            <div class="modal-subtitle">Nutritional Info (Approx)</div>
+            <div class="nutrition-grid">
+              <div class="nutrition-item">
+                <div class="nutrition-val" id="nutrCal">350</div>
+                <div class="nutrition-lbl">kcal</div>
+              </div>
+              <div class="nutrition-item">
+                <div class="nutrition-val" id="nutrProt">12g</div>
+                <div class="nutrition-lbl">Protein</div>
+              </div>
+              <div class="nutrition-item">
+                <div class="nutrition-val" id="nutrCarb">45g</div>
+                <div class="nutrition-lbl">Carbs</div>
+              </div>
+              <div class="nutrition-item">
+                <div class="nutrition-val" id="nutrFat">10g</div>
+                <div class="nutrition-lbl">Fat</div>
+              </div>
+            </div>
+
+            <!-- Customizations -->
+            <div class="custom-section">
+              <div class="modal-subtitle">Customize Your Dish</div>
+              <div class="custom-option-list" id="customOptionList">
+                <!-- Checkboxes loaded here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-action-bar">
+          <div class="modal-price-display">
+            <span class="modal-price-lbl">Item Total</span>
+            <span class="modal-price-val" id="modalPrice">₹0</span>
+          </div>
+          <button class="modal-add-btn" id="modalAddBtn">
+            Add to Order <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHECKOUT SUCCESS OVERLAY -->
+    <div class="success-overlay" id="successOverlay">
+      <div class="success-card">
+        <div class="success-icon">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <h2>Order Confirmed!</h2>
+        <p>
+          Your delicious order has been received by the kitchen. We are
+          preparing it fresh and will deliver it within 30 minutes!
+        </p>
+        <button class="success-close-btn" onclick="closeSuccessOverlay()">
+          Got it!
+        </button>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div>
+            <div class="footer-brand-name">Let's<span>Eat</span></div>
+            <p class="footer-desc">
+              Fresh food from the city's finest restaurants — delivered with
+              love and speed.
+            </p>
+            <div class="footer-socials">
+              <a href="#" class="social-btn"
+                ><i class="fa-brands fa-facebook-f"></i
+              ></a>
+              <a href="#" class="social-btn"
+                ><i class="fa-brands fa-x-twitter"></i
+              ></a>
+              <a href="#" class="social-btn"
+                ><i class="fa-brands fa-instagram"></i
+              ></a>
+              <a href="#" class="social-btn"
+                ><i class="fa-brands fa-linkedin-in"></i
+              ></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Press</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">Track Order</a></li>
+              <li><a href="#">Refund Policy</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>&copy; 2024 Let's Eat. All rights reserved.</span>
+          <span>Order from the best restaurants near you.</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- CORE INTERACTION JAVASCRIPT -->
+    <script>
+      // 1. DATASET
+      const MENU_ITEMS = [
+        {
+          id: "biryani-chicken",
+          name: "Hyderabadi Chicken Biryani",
+          category: "biryani",
+          price: 320,
+          rating: 4.9,
+          reviews: 180,
+          image:
+            "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&auto=format&fit=crop",
+          veg: false,
+          spicy: 3,
+          description:
+            "Aromatic long-grain basmati rice layered with marinated chicken, saffron, and caramelized onions, slow-cooked in traditional dum style.",
+          chefSpecial: true,
+          ingredients: [
+            "Basmati Rice",
+            "Chicken Tenders",
+            "Saffron",
+            "Spices",
+            "Mint & Coriander",
+          ],
+          nutrition: {
+            calories: 580,
+            protein: "28g",
+            carbs: "65g",
+            fat: "18g",
+          },
+          customizations: [
+            { name: "Double Marinated Chicken", price: 80 },
+            { name: "Extra Raita", price: 15 },
+            { name: "Boiled Egg (1 pc)", price: 10 },
+          ],
+        },
+        {
+          id: "mains-paneer-butter",
+          name: "Paneer Butter Masala",
+          category: "mains",
+          price: 260,
+          rating: 4.8,
+          reviews: 142,
+          image:
+            "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=500&auto=format&fit=crop",
+          veg: true,
+          spicy: 1,
+          description:
+            "Rich, creamy cottage cheese cubes simmered in a mildly sweet tomato, butter, and cashew-nut gravy.",
+          chefSpecial: false,
+          ingredients: [
+            "Paneer Cubes",
+            "Fresh Tomato Gravy",
+            "Cashew Nuts",
+            "Butter",
+            "Fresh Cream",
+          ],
+          nutrition: {
+            calories: 480,
+            protein: "14g",
+            carbs: "12g",
+            fat: "32g",
+          },
+          customizations: [
+            { name: "Extra Butter", price: 20 },
+            { name: "Double Cottage Cheese", price: 60 },
+          ],
+        },
+        {
+          id: "chinese-manchurian",
+          name: "Veg Manchurian Dry",
+          category: "chinese",
+          price: 210,
+          rating: 4.5,
+          reviews: 95,
+          image:
+            "https://images.unsplash.com/photo-1525755662778-989d0524087e?w=500&auto=format&fit=crop",
+          veg: true,
+          spicy: 2,
+          description:
+            "Crispy fried vegetable balls tossed in a savory, tangy Schezwan soy sauce with bell peppers and spring onion greens.",
+          chefSpecial: false,
+          ingredients: [
+            "Cabbage & Carrot",
+            "Soy Sauce",
+            "Ginger & Garlic",
+            "Spring Onion",
+            "Chili Sauce",
+          ],
+          nutrition: { calories: 340, protein: "6g", carbs: "42g", fat: "12g" },
+          customizations: [
+            { name: "Make it extra saucy", price: 15 },
+            { name: "Add chopped mushrooms", price: 30 },
+          ],
+        },
+        {
+          id: "mains-butter-chicken",
+          name: "Classic Butter Chicken",
+          category: "mains",
+          price: 340,
+          rating: 4.9,
+          reviews: 220,
+          image:
+            "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&auto=format&fit=crop",
+          veg: false,
+          spicy: 1,
+          description:
+            "Tender tandoori-grilled chicken tikka pieces cooked in a creamy tomato gravy enriched with fresh cream and butter.",
+          chefSpecial: true,
+          ingredients: [
+            "Tandoori Chicken Tikka",
+            "Tomato Butter Gravy",
+            "Cashews",
+            "Kasuri Methi",
+          ],
+          nutrition: {
+            calories: 520,
+            protein: "32g",
+            carbs: "10g",
+            fat: "34g",
+          },
+          customizations: [
+            { name: "Extra Butter", price: 20 },
+            { name: "Add Bone-in pieces", price: 40 },
+          ],
+        },
+        {
+          id: "rolls-double-cheese",
+          name: "Double Cheese Roll",
+          category: "rolls",
+          price: 160,
+          rating: 4.4,
+          reviews: 85,
+          image:
+            "https://images.unsplash.com/photo-1726824861064-00350d7f68e4?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8RG91YmxlJTIwQ2hlZXNlJTIwUm9sbHxlbnwwfHwwfHx8MA%3D%3D",
+          veg: true,
+          spicy: 1,
+          description:
+            "Golden-crisped wheat paratha wrapped tightly around layers of grated paneer, mozzarella cheese, and bell peppers, spiced with home sauces.",
+          chefSpecial: false,
+          ingredients: [
+            "Wheat Flatbread",
+            "Paneer & Mozzarella",
+            "Onion & Capsicum",
+            "Green Chutney",
+            "Mayonnaise",
+          ],
+          nutrition: {
+            calories: 410,
+            protein: "12g",
+            carbs: "38g",
+            fat: "19g",
+          },
+          customizations: [
+            { name: "Make it double wrap", price: 25 },
+            { name: "Extra Spiced Dip", price: 10 },
+          ],
+        },
+        {
+          id: "dessert-black-velvet",
+          name: "Black Velvet Cake (Slice)",
+          category: "desserts",
+          price: 180,
+          rating: 4.8,
+          reviews: 75,
+          image:
+            "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&auto=format&fit=crop",
+          veg: true,
+          spicy: 0,
+          description:
+            "Rich, moist layers of premium dark cocoa-infused sponge with velvety white cream-cheese frosting.",
+          chefSpecial: false,
+          ingredients: [
+            "Dark Cocoa",
+            "Cream Cheese",
+            "Vanilla Essence",
+            "Butter Cream",
+            "Flour",
+          ],
+          nutrition: { calories: 380, protein: "4g", carbs: "48g", fat: "16g" },
+          customizations: [
+            { name: "Warm it up", price: 0 },
+            { name: "Add Chocolate syrup drizzle", price: 15 },
+          ],
+        },
+        {
+          id: "dessert-chocolate-lava",
+          name: "Molten Chocolate Lava",
+          category: "desserts",
+          price: 150,
+          rating: 4.9,
+          reviews: 130,
+          image:
+            "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&auto=format&fit=crop",
+          veg: true,
+          spicy: 0,
+          description:
+            "Freshly baked warm chocolate cake with a gooey, molten chocolate center that bursts open, served hot.",
+          chefSpecial: true,
+          ingredients: [
+            "Dark Chocolate Callets",
+            "Cocoa Powder",
+            "Butter",
+            "Vanilla Extract",
+          ],
+          nutrition: { calories: 420, protein: "5g", carbs: "52g", fat: "20g" },
+          customizations: [
+            { name: "Add Vanilla Ice Cream scoop", price: 35 },
+            { name: "Sprinkle Chopped Almonds", price: 15 },
+          ],
+        },
+        {
+          id: "juice-mango-lassi",
+          name: "Thick Mango Lassi",
+          category: "juices",
+          price: 110,
+          rating: 4.7,
+          reviews: 90,
+          image:
+            "https://images.unsplash.com/photo-1541658016709-82535e94bc69?w=500&auto=format&fit=crop",
+          veg: true,
+          spicy: 0,
+          description:
+            "Creamy, traditional yogurt drink blended with fresh sweet Alphonso mango pulp and topped with almond flakes.",
+          chefSpecial: false,
+          ingredients: [
+            "Fresh Yogurt",
+            "Alphonso Mango Pulp",
+            "Cardamom Powder",
+            "Saffron Strands",
+            "Crushed Nuts",
+          ],
+          nutrition: { calories: 240, protein: "6g", carbs: "36g", fat: "4g" },
+          customizations: [
+            { name: "Add Honey instead of Sugar", price: 15 },
+            { name: "Double dry-fruits topping", price: 20 },
+          ],
+        },
+        {
+          id: "juice-cold-brew",
+          name: "Cold Brew Coffee",
+          category: "juices",
+          price: 140,
+          rating: 4.5,
+          reviews: 60,
+          image:
+            "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=500&auto=format&fit=crop",
+          veg: true,
+          spicy: 0,
+          description:
+            "Smooth, low-acidity coffee steeped cold for 18 hours using single-origin Arabica beans, served over cubed ice.",
+          chefSpecial: false,
+          ingredients: [
+            "18-hr steeped Arabica beans",
+            "Cube Ice",
+            "Filtered Water",
+          ],
+          nutrition: { calories: 5, protein: "0g", carbs: "1g", fat: "0g" },
+          customizations: [
+            { name: "Add Full Cream Milk", price: 15 },
+            { name: "Vanilla Flavor Shot", price: 20 },
+            { name: "Caramel Drizzle", price: 20 },
+          ],
+        },
+        {
+          id: "mains-masala-dosa",
+          name: "Crispy Masala Dosa",
+          category: "mains",
+          price: 120,
+          rating: 4.8,
+          reviews: 200,
+          image:
+            "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=500&auto=format&fit=crop",
+          veg: true,
+          spicy: 1,
+          description:
+            "Golden-crisped fermented rice and lentil crepe stuffed with savory mashed potatoes tempered with mustard seeds, curry leaves, and onions.",
+          chefSpecial: false,
+          ingredients: [
+            "Fermented Batter",
+            "Potato Masala filling",
+            "Pure Ghee",
+            "Coconut Chutney",
+            "Hot Sambar",
+          ],
+          nutrition: { calories: 310, protein: "7g", carbs: "54g", fat: "8g" },
+          customizations: [
+            { name: "Butter Dosa Base", price: 15 },
+            { name: "Add Grated Cheese", price: 30 },
+          ],
+        },
+        {
+          id: "rolls-paneer-tikka",
+          name: "Paneer Tikka Roll",
+          category: "rolls",
+          price: 180,
+          rating: 4.6,
+          reviews: 105,
+          image:
+            "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&auto=format&fit=crop",
+          veg: true,
+          spicy: 2,
+          description:
+            "Tandoor-charred spiced paneer cubes, capsicum, and onions wrapped in a soft flatbread spread with signature mint chutney.",
+          chefSpecial: false,
+          ingredients: [
+            "Spiced Paneer Tikka",
+            "Capsicum & Onion",
+            "Roti wrap",
+            "Mint & Coriander Chutney",
+          ],
+          nutrition: {
+            calories: 390,
+            protein: "13g",
+            carbs: "35g",
+            fat: "17g",
+          },
+          customizations: [
+            { name: "Extra Spiced Tikka cubes", price: 40 },
+            { name: "Lachha Paratha base instead of Roti", price: 20 },
+          ],
+        },
+        {
+          id: "rolls-garlic-bread",
+          name: "Premium Garlic Bread",
+          category: "rolls",
+          price: 130,
+          rating: 4.6,
+          reviews: 110,
+          image:
+            "https://images.unsplash.com/photo-1751298467221-bb1b0d298101?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          veg: true,
+          spicy: 1,
+          description:
+            "Fresh baked baguette slices spread with house-churned garlic butter, fresh parsley, and melted cheese toasted golden brown.",
+          chefSpecial: false,
+          ingredients: [
+            "Baguette Bread",
+            "Garlic Butter",
+            "Fresh Parsley",
+            "Mozzarella Cheese",
+          ],
+          nutrition: { calories: 290, protein: "8g", carbs: "32g", fat: "14g" },
+          customizations: [
+            { name: "Add spicy Jalapenos", price: 15 },
+            { name: "Extra melted Mozzarella", price: 30 },
+          ],
+        },
+      ];
+
+      // 2. STATE OBJECT
+      let activeCategory = "all";
+      let searchQuery = "";
+      let sortBy = "popularity";
+      let vegFilter = false;
+      let spicyFilter = false;
+      let specialFilter = false;
+      let cart = [];
+      let favorites = new Set();
+      let activeDetailItem = null;
+      let activePromoDiscount = 0;
+
+      // 3. PAGE INITIALIZATION
+      window.addEventListener("DOMContentLoaded", () => {
+        // Load initial favorites from localStorage
+        const storedFavs = localStorage.getItem("letsEatFavs");
+        if (storedFavs) {
+          favorites = new Set(JSON.parse(storedFavs));
+        }
+
+        // Load initial cart from localStorage
+        const storedCart = localStorage.getItem("letsEatCart");
+        if (storedCart) {
+          cart = JSON.parse(storedCart);
+        }
+
+        // Parse category query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const catParam = urlParams.get("category");
+        if (catParam) {
+          activeCategory = catParam;
+          // Set correct button active class
+          const catButtons = document.querySelectorAll(".filter-btn");
+          catButtons.forEach((btn) => {
+            if (btn.getAttribute("data-category") === catParam) {
+              btn.classList.add("active");
+            } else {
+              btn.classList.remove("active");
+            }
+          });
+        }
+
+        renderMenuGrid();
+        updateFloatingCartBubble();
+        bindDomEvents();
+      });
+
+      // 4. DOM BINDINGS
+      function bindDomEvents() {
+        // Search Input
+        document
+          .getElementById("searchInput")
+          .addEventListener("input", (e) => {
+            searchQuery = e.target.value.toLowerCase().trim();
+            renderMenuGrid();
+          });
+
+        // Sort Select
+        document
+          .getElementById("sortSelect")
+          .addEventListener("change", (e) => {
+            sortBy = e.target.value;
+            renderMenuGrid();
+          });
+
+        // Category Buttons
+        const catButtons = document.querySelectorAll(".filter-btn");
+        catButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            catButtons.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            activeCategory = btn.getAttribute("data-category");
+            renderMenuGrid();
+          });
+        });
+
+        // Toggle Buttons (Veg, Spicy, Chef Special)
+        const toggleButtons = document.querySelectorAll(".toggle-btn");
+        toggleButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            btn.classList.toggle("active");
+            const type = btn.getAttribute("data-type");
+            if (type === "veg") vegFilter = !vegFilter;
+            if (type === "spicy") spicyFilter = !spicyFilter;
+            if (type === "special") specialFilter = !specialFilter;
+            renderMenuGrid();
+          });
+        });
+
+        // Mobile Menu Nav
+        const hamburger = document.getElementById("hamburger");
+        const mobileMenu = document.getElementById("mobileMenu");
+        const mobileClose = document.getElementById("mobileClose");
+
+        hamburger.addEventListener("click", () =>
+          mobileMenu.classList.add("open"),
+        );
+        mobileClose.addEventListener("click", () =>
+          mobileMenu.classList.remove("open"),
+        );
+
+        // Modal Action
+        document.getElementById("modalAddBtn").addEventListener("click", () => {
+          if (activeDetailItem) {
+            // Get selected customizations
+            const selectedCust = [];
+            const checkBoxes = document.querySelectorAll(
+              ".custom-checkbox-row input",
+            );
+            checkBoxes.forEach((cb) => {
+              if (cb.checked) {
+                const index = parseInt(cb.getAttribute("data-index"));
+                selectedCust.push(activeDetailItem.customizations[index]);
+              }
+            });
+            addToCart(activeDetailItem.id, selectedCust);
+            toggleDetailModal(false);
+          }
+        });
+      }
+
+      function closeMobile() {
+        document.getElementById("mobileMenu").classList.remove("open");
+      }
+
+      // 5. RENDER MENU ITEMS
+      function renderMenuGrid() {
+        const grid = document.getElementById("menuGrid");
+        grid.innerHTML = "";
+
+        // Filter items
+        let items = MENU_ITEMS.filter((item) => {
+          const matchesCategory =
+            activeCategory === "all" || item.category === activeCategory;
+          const matchesSearch =
+            item.name.toLowerCase().includes(searchQuery) ||
+            item.description.toLowerCase().includes(searchQuery) ||
+            item.ingredients.some((ing) =>
+              ing.toLowerCase().includes(searchQuery),
+            );
+
+          const matchesVeg = !vegFilter || item.veg === true;
+          const matchesSpicy = !spicyFilter || item.spicy > 0;
+          const matchesSpecial = !specialFilter || item.chefSpecial === true;
+
+          return (
+            matchesCategory &&
+            matchesSearch &&
+            matchesVeg &&
+            matchesSpicy &&
+            matchesSpecial
+          );
+        });
+
+        // Sort items
+        if (sortBy === "popularity") {
+          items.sort((a, b) => b.rating * b.reviews - a.rating * a.reviews);
+        } else if (sortBy === "rating") {
+          items.sort((a, b) => b.rating - a.rating);
+        } else if (sortBy === "price-low") {
+          items.sort((a, b) => a.price - b.price);
+        } else if (sortBy === "price-high") {
+          items.sort((a, b) => b.price - a.price);
+        }
+
+        // Render Cards
+        if (items.length === 0) {
+          grid.innerHTML = `
+            <div class="no-results">
+              <i class="fa-solid fa-cookie-bite"></i>
+              <h3>No items found</h3>
+              <p>We couldn't find anything matching your filters or search. Try resetting them!</p>
+            </div>
+          `;
+          return;
+        }
+
+        items.forEach((item) => {
+          // Check item occurrences in cart (base default item quantity)
+          const cartOccurrences = cart.filter(
+            (ci) => ci.item.id === item.id && ci.customizations.length === 0,
+          );
+          const baseQty =
+            cartOccurrences.length > 0 ? cartOccurrences[0].quantity : 0;
+
+          const card = document.createElement("div");
+          card.className = "menu-page-card fade-up visible";
+
+          const starRatingHtml = Array(Math.round(item.rating))
+            .fill('<i class="fa-solid fa-star"></i>')
+            .join("");
+          const isFav = favorites.has(item.id) ? "active" : "";
+          const chefBadge = item.chefSpecial
+            ? `<span class="card-badge"><i class="fa-solid fa-award"></i> Chef's Choice</span>`
+            : "";
+          const dietClass = item.veg ? "veg" : "non-veg";
+          const dietLabel = item.veg ? "Veg" : "Non-Veg";
+
+          card.innerHTML = `
+            <div class="card-img-wrap" onclick="openDetailModal('${item.id}')">
+              <img src="${item.image}" alt="${item.name}" loading="lazy" />
+              ${chefBadge}
+              <button class="card-fav-btn ${isFav}" onclick="toggleFavorite(event, '${item.id}')">
+                <i class="fa-solid fa-heart"></i>
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="card-meta-row">
+                <div class="diet-indicator ${dietClass}">
+                  <span class="diet-dot"></span>
+                  <span>${dietLabel}</span>
+                </div>
+                <div class="spicy-meter level-${item.spicy}">
+                  <i class="fa-solid fa-fire"></i>
+                  <i class="fa-solid fa-fire"></i>
+                  <i class="fa-solid fa-fire"></i>
+                </div>
+              </div>
+              <div class="card-title-row">
+                <h3 onclick="openDetailModal('${item.id}')">${item.name}</h3>
+                <span class="card-rating"><i class="fa-solid fa-star"></i> ${item.rating}</span>
+              </div>
+              <p class="card-desc">${item.description}</p>
+              <div class="card-footer">
+                <span class="card-price">₹${item.price}</span>
+                <div class="action-wrapper">
+                  ${
+                    baseQty > 0
+                      ? `<div class="qty-controller">
+                          <button class="qty-btn" onclick="updateItemBaseQty('${item.id}', -1)"><i class="fa-solid fa-minus"></i></button>
+                          <span class="qty-val">${baseQty}</span>
+                          <button class="qty-btn" onclick="updateItemBaseQty('${item.id}', 1)"><i class="fa-solid fa-plus"></i></button>
+                         </div>`
+                      : `<button class="card-add-btn" onclick="addToCart('${item.id}', [])">
+                          Add <i class="fa-solid fa-plus"></i>
+                         </button>`
+                  }
+                </div>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      // 6. FAVORITES TOGGLE
+      function toggleFavorite(event, itemId) {
+        event.stopPropagation();
+        const btn = event.currentTarget;
+        if (favorites.has(itemId)) {
+          favorites.delete(itemId);
+          btn.classList.remove("active");
+        } else {
+          favorites.add(itemId);
+          btn.classList.add("active");
+        }
+        localStorage.setItem(
+          "letsEatFavs",
+          JSON.stringify(Array.from(favorites)),
+        );
+      }
+
+      // 7. CART SYSTEM
+      function toggleCart(show) {
+        const drawer = document.getElementById("cartDrawer");
+        const backdrop = document.getElementById("cartBackdrop");
+        if (show) {
+          drawer.classList.add("open");
+          backdrop.classList.add("open");
+          renderCartDrawer();
+        } else {
+          drawer.classList.remove("open");
+          backdrop.classList.remove("open");
+        }
+      }
+
+      function addToCart(itemId, customizations = []) {
+        const item = MENU_ITEMS.find((mi) => mi.id === itemId);
+        if (!item) return;
+
+        // Calculate customization cost
+        const customizationCost = customizations.reduce(
+          (acc, c) => acc + c.price,
+          0,
+        );
+        const finalPrice = item.price + customizationCost;
+
+        // Check if matching cart item (same item ID + exact same customization names)
+        const matchingIndex = cart.findIndex((ci) => {
+          if (ci.item.id !== itemId) return false;
+          if (ci.customizations.length !== customizations.length) return false;
+          // Verify customizations match
+          const names1 = ci.customizations.map((c) => c.name).sort();
+          const names2 = customizations.map((c) => c.name).sort();
+          return JSON.stringify(names1) === JSON.stringify(names2);
+        });
+
+        if (matchingIndex > -1) {
+          cart[matchingIndex].quantity += 1;
+        } else {
+          cart.push({
+            item,
+            quantity: 1,
+            customizations,
+            finalPrice,
+          });
+        }
+
+        // Animate Floating Cart badge
+        const badge = document.getElementById("floatingCart");
+        badge.style.transform = "scale(1.25)";
+        setTimeout(() => (badge.style.transform = ""), 250);
+
+        saveAndSyncCart();
+        renderMenuGrid();
+
+        // Show cart feedback/toast or open cart
+        if (customizations.length > 0) {
+          // Open cart drawer if customized additions happen, for visual reinforcement
+          toggleCart(true);
+        } else {
+          updateFloatingCartBubble();
+        }
+      }
+
+      function updateItemBaseQty(itemId, delta) {
+        // Quantities change for default (no customizations) cart rows from menu card
+        const index = cart.findIndex(
+          (ci) => ci.item.id === itemId && ci.customizations.length === 0,
+        );
+        if (index > -1) {
+          cart[index].quantity += delta;
+          if (cart[index].quantity <= 0) {
+            cart.splice(index, 1);
+          }
+          saveAndSyncCart();
+          renderMenuGrid();
+          renderCartDrawer();
+        }
+      }
+
+      function updateCartRowQty(index, delta) {
+        if (cart[index]) {
+          cart[index].quantity += delta;
+          if (cart[index].quantity <= 0) {
+            cart.splice(index, 1);
+          }
+          saveAndSyncCart();
+          renderMenuGrid();
+          renderCartDrawer();
+        }
+      }
+
+      function saveAndSyncCart() {
+        localStorage.setItem("letsEatCart", JSON.stringify(cart));
+        updateFloatingCartBubble();
+      }
+
+      function updateFloatingCartBubble() {
+        const count = cart.reduce((acc, ci) => acc + ci.quantity, 0);
+        document.getElementById("cartCount").textContent = count;
+
+        // Highlight active order badge in Nav
+        const orderBtn = document.getElementById("navOrderBtn");
+        if (count > 0) {
+          orderBtn.innerHTML = `<i class="fa-solid fa-bag-shopping"></i> Order Now (${count})`;
+          orderBtn.style.background = "var(--orange-light)";
+        } else {
+          orderBtn.innerHTML = `<i class="fa-solid fa-bag-shopping"></i> Order Now`;
+          orderBtn.style.background = "";
+        }
+      }
+
+      // 8. RENDER CART DRAWER
+      function renderCartDrawer() {
+        const container = document.getElementById("cartItemsList");
+        container.innerHTML = "";
+
+        if (cart.length === 0) {
+          container.innerHTML = `
+            <div class="empty-cart-state">
+              <i class="fa-solid fa-basket-shopping"></i>
+              <h3>Your cart is empty</h3>
+              <p>Add some tasty creations from our menu to start your order!</p>
+            </div>
+          `;
+          // Clear totals
+          document.getElementById("subtotalVal").textContent = "₹0";
+          document.getElementById("gstVal").textContent = "₹0";
+          document.getElementById("deliveryVal").textContent = "₹0";
+          document.getElementById("discountRow").style.display = "none";
+          document.getElementById("totalVal").textContent = "₹0";
+          return;
+        }
+
+        cart.forEach((ci, index) => {
+          const row = document.createElement("div");
+          row.className = "cart-item-row";
+
+          const custSummary =
+            ci.customizations.length > 0
+              ? `+ ${ci.customizations.map((c) => c.name).join(", ")}`
+              : "";
+
+          row.innerHTML = `
+            <img class="cart-item-img" src="${ci.item.image}" alt="${ci.item.name}" />
+            <div class="cart-item-info">
+              <div class="cart-item-name">${ci.item.name}</div>
+              ${custSummary ? `<div class="cart-item-cust">${custSummary}</div>` : ""}
+              <div class="cart-item-price">₹${ci.finalPrice * ci.quantity}</div>
+            </div>
+            <div class="cart-item-qty">
+              <button class="cart-qty-btn" onclick="updateCartRowQty(${index}, -1)"><i class="fa-solid fa-minus"></i></button>
+              <span class="cart-qty-val">${ci.quantity}</span>
+              <button class="cart-qty-btn" onclick="updateCartRowQty(${index}, 1)"><i class="fa-solid fa-plus"></i></button>
+            </div>
+          `;
+          container.appendChild(row);
+        });
+
+        calculateCartTotals();
+      }
+
+      function calculateCartTotals() {
+        const subtotal = cart.reduce(
+          (acc, ci) => acc + ci.finalPrice * ci.quantity,
+          0,
+        );
+        const gst = Math.round(subtotal * 0.05);
+
+        // Delivery is ₹30, free for subtotal > ₹500
+        const delivery = subtotal > 500 ? 0 : 30;
+
+        // Discount
+        let discount = activePromoDiscount;
+        if (discount > subtotal) discount = subtotal;
+
+        const grandTotal = subtotal + gst + delivery - discount;
+
+        document.getElementById("subtotalVal").textContent = `₹${subtotal}`;
+        document.getElementById("gstVal").textContent = `₹${gst}`;
+        document.getElementById("deliveryVal").textContent =
+          delivery === 0 ? "Free" : `₹${delivery}`;
+
+        if (discount > 0) {
+          document.getElementById("discountRow").style.display = "flex";
+          document.getElementById("discountVal").textContent = `-₹${discount}`;
+        } else {
+          document.getElementById("discountRow").style.display = "none";
+        }
+
+        document.getElementById("totalVal").textContent = `₹${grandTotal}`;
+      }
+
+      // 9. PROMO CODES
+      function applyPromo() {
+        const input = document
+          .getElementById("promoInput")
+          .value.trim()
+          .toUpperCase();
+        const promoBtn = document.getElementById("promoBtn");
+
+        if (input === "EAT100") {
+          activePromoDiscount = 100;
+          promoBtn.textContent = "Applied!";
+          promoBtn.style.background = "#10b981";
+          calculateCartTotals();
+        } else {
+          alert("Invalid Promo Code! Use EAT100 to get ₹100 off.");
+          activePromoDiscount = 0;
+          promoBtn.textContent = "Apply";
+          promoBtn.style.background = "";
+          calculateCartTotals();
+        }
+      }
+
+      // 10. PRODUCT DETAIL MODAL
+      function openDetailModal(itemId) {
+        const item = MENU_ITEMS.find((mi) => mi.id === itemId);
+        if (!item) return;
+
+        activeDetailItem = item;
+
+        // Populate elements
+        document.getElementById("modalImg").src = item.image;
+        document.getElementById("modalImg").alt = item.name;
+        document.getElementById("modalName").textContent = item.name;
+        document.getElementById("modalRating").innerHTML =
+          `<i class="fa-solid fa-star"></i> ${item.rating} (${item.reviews} reviews)`;
+
+        // Diet Tag
+        const dietEl = document.getElementById("modalDiet");
+        dietEl.className = `diet-indicator ${item.veg ? "veg" : "non-veg"}`;
+        dietEl.innerHTML = `<span class="diet-dot"></span> ${item.veg ? "Veg" : "Non-Veg"}`;
+
+        // Spicy Info
+        const spicyText =
+          item.spicy === 3
+            ? "Extra Hot"
+            : item.spicy === 2
+              ? "Spicy"
+              : item.spicy === 1
+                ? "Mild Spicy"
+                : "Non-Spicy";
+        document.getElementById("modalSpicy").innerHTML =
+          `<i class="fa-solid fa-fire"></i> ${spicyText}`;
+
+        document.getElementById("modalDesc").textContent = item.description;
+
+        // Nutrition facts
+        document.getElementById("nutrCal").textContent =
+          item.nutrition.calories;
+        document.getElementById("nutrProt").textContent =
+          item.nutrition.protein;
+        document.getElementById("nutrCarb").textContent = item.nutrition.carbs;
+        document.getElementById("nutrFat").textContent = item.nutrition.fat;
+
+        // Customizations checkboxes
+        const list = document.getElementById("customOptionList");
+        list.innerHTML = "";
+
+        if (!item.customizations || item.customizations.length === 0) {
+          list.innerHTML = `<p style="font-size: 0.85rem; color: var(--muted)">No additional customizations available for this item.</p>`;
+        } else {
+          item.customizations.forEach((c, idx) => {
+            const row = document.createElement("label");
+            row.className = "custom-checkbox-row";
+            row.innerHTML = `
+              <div class="custom-lbl-side">
+                <input type="checkbox" data-index="${idx}" onchange="updateModalPriceDisplay()" />
+                <span>${c.name}</span>
+              </div>
+              <span class="custom-price-side">+₹${c.price}</span>
+            `;
+            list.appendChild(row);
+          });
+        }
+
+        updateModalPriceDisplay();
+        toggleDetailModal(true);
+      }
+
+      function updateModalPriceDisplay() {
+        if (!activeDetailItem) return;
+        let price = activeDetailItem.price;
+
+        const checkBoxes = document.querySelectorAll(
+          ".custom-checkbox-row input",
+        );
+        checkBoxes.forEach((cb) => {
+          if (cb.checked) {
+            const index = parseInt(cb.getAttribute("data-index"));
+            price += activeDetailItem.customizations[index].price;
+          }
+        });
+
+        document.getElementById("modalPrice").textContent = `₹${price}`;
+      }
+
+      function toggleDetailModal(show) {
+        const modal = document.getElementById("detailModal");
+        if (show) {
+          modal.classList.add("open");
+        } else {
+          modal.classList.remove("open");
+        }
+      }
+
+      function closeDetailModal(event) {
+        // Close modal if clicking backdrop
+        if (event.target.id === "detailModal") {
+          toggleDetailModal(false);
+        }
+      }
+
+      // 11. CHECKOUT LOGIC
+      function triggerCheckout() {
+        if (cart.length === 0) {
+          alert("Your cart is empty. Add items first!");
+          return;
+        }
+        toggleCart(false);
+        document.getElementById("successOverlay").classList.add("open");
+      }
+
+      function closeSuccessOverlay() {
+        document.getElementById("successOverlay").classList.remove("open");
+        // Clear cart
+        cart = [];
+        activePromoDiscount = 0;
+        document.getElementById("promoInput").value = "";
+        document.getElementById("promoBtn").textContent = "Apply";
+        document.getElementById("promoBtn").style.background = "";
+        saveAndSyncCart();
+        renderMenuGrid();
+      }
+
+      // Nav Order Now click helper
+      document.getElementById("navOrderBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+        toggleCart(true);
+      });
+    </script>
+  </body>
+</html>

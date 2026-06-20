@@ -20,16 +20,18 @@
       <a href="#" class="nav-logo">Let's<span>Eat</span></a>
       <ul class="nav-links">
         <li>
-          <a href="#categories"><i class="fa-solid fa-grid-2"></i> Menu</a>
+          <a href="menu.html"><i class="fa-solid fa-grid-2"></i> Menu</a>
         </li>
         <li>
-          <a href="#reserve"><i class="fa-solid fa-calendar"></i> Reserve</a>
+          <a href="reserve.html"
+            ><i class="fa-solid fa-calendar"></i> Reserve</a
+          >
         </li>
         <li>
-          <a href="#testimonials"><i class="fa-solid fa-star"></i> Reviews</a>
+          <a href="reviews.html"><i class="fa-solid fa-star"></i> Reviews</a>
         </li>
         <li>
-          <a href="#" class="nav-cta"
+          <a href="menu.html" class="nav-cta"
             ><i class="fa-solid fa-bag-shopping"></i> Order Now</a
           >
         </li>
@@ -44,10 +46,10 @@
       <button class="mobile-close" id="mobileClose">
         <i class="fa-solid fa-xmark"></i>
       </button>
-      <a href="#categories" onclick="closeMobile()">Menu</a>
-      <a href="#reserve" onclick="closeMobile()">Reserve</a>
-      <a href="#testimonials" onclick="closeMobile()">Reviews</a>
-      <a href="#" onclick="closeMobile()">Order Now</a>
+      <a href="menu.html" onclick="closeMobile()">Menu</a>
+      <a href="reserve.html" onclick="closeMobile()">Reserve</a>
+      <a href="reviews.html" onclick="closeMobile()">Reviews</a>
+      <a href="menu.html" onclick="closeMobile()">Order Now</a>
     </div>
 
     <!-- HERO -->
@@ -60,10 +62,10 @@
           crafted with passion.
         </p>
         <div class="hero-actions">
-          <a href="#categories" class="btn-primary"
+          <a href="menu.html" class="btn-primary"
             ><i class="fa-solid fa-utensils"></i> Explore Menu</a
           >
-          <a href="#reserve" class="btn-outline"
+          <a href="reserve.html" class="btn-outline"
             ><i class="fa-solid fa-calendar-check"></i> Book a Table</a
           >
         </div>
@@ -434,9 +436,13 @@
             <div class="reserve-sub">
               Available from 12:00 PM – 11:00 PM daily
             </div>
-            <button class="reserve-btn">
+            <a
+              href="reserve.html"
+              class="reserve-btn"
+              style="text-decoration: none"
+            >
               Book a Table <i class="fa-solid fa-arrow-right"></i>
-            </button>
+            </a>
           </div>
         </div>
         <div
@@ -451,9 +457,13 @@
             <div class="reserve-sub">
               Loved a dish? Tell the world about it.
             </div>
-            <button class="reserve-btn">
+            <a
+              href="reviews.html"
+              class="reserve-btn"
+              style="text-decoration: none"
+            >
               Write a Review <i class="fa-solid fa-arrow-right"></i>
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -524,26 +534,68 @@
       const catCards = catsTrack.querySelectorAll(".cat-card");
       const catLeft = document.getElementById("catLeft");
       const catRight = document.getElementById("catRight");
-      const visibleCount = () =>
-        window.innerWidth < 480 ? 2 : window.innerWidth < 768 ? 3 : 5;
 
       function scrollCat(dir) {
-        const max = Math.max(0, catCards.length - visibleCount());
-        catIdx = Math.max(0, Math.min(catIdx + dir, max));
+        const wrapWidth = catsTrack.parentElement.clientWidth;
+        const trackWidth = catsTrack.scrollWidth;
+        const maxScroll = Math.max(0, trackWidth - wrapWidth);
+
+        if (maxScroll <= 0) {
+          catsTrack.style.transform = `translateX(0px)`;
+          catIdx = 0;
+          catLeft.disabled = true;
+          catRight.disabled = true;
+          return;
+        }
+
         const w = catCards[0].offsetWidth + 16;
-        catsTrack.style.transform = `translateX(-${catIdx * w}px)`;
+        const maxIdx = Math.ceil(maxScroll / w);
+
+        catIdx = Math.max(0, Math.min(catIdx + dir, maxIdx));
+
+        let scrollAmount = catIdx * w;
+        if (scrollAmount > maxScroll) {
+          scrollAmount = maxScroll;
+        }
+
+        catsTrack.style.transform = `translateX(-${scrollAmount}px)`;
         catLeft.disabled = catIdx === 0;
-        catRight.disabled = catIdx >= max;
+        catRight.disabled = scrollAmount >= maxScroll;
       }
+
+      // Initialize button states
+      scrollCat(0);
+
+      // Handle resize events
+      window.addEventListener("resize", () => {
+        scrollCat(0);
+      });
+
+      // Category click mapping and redirect
+      const categoryMap = {
+        biryani: "biryani",
+        chinese: "chinese",
+        juices: "juices",
+        rolls: "rolls",
+        "ice cream": "desserts",
+        cakes: "desserts",
+        dosa: "mains",
+        coffee: "juices",
+      };
 
       catCards.forEach((c) =>
         c.addEventListener("click", () => {
           catCards.forEach((x) => x.classList.remove("active"));
           c.classList.add("active");
+
+          const catName = c
+            .querySelector(".cat-name")
+            .textContent.toLowerCase()
+            .trim();
+          const mappedCat = categoryMap[catName] || "all";
+          window.location.href = `menu.html?category=${mappedCat}`;
         }),
       );
-
-      catLeft.disabled = true;
 
       let slideIdx = 0;
       const slides = document.querySelectorAll(".testimonial-slide");

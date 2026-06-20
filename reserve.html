@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reserve - Let's Eat</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <a href="index.html" class="nav-logo">Let's<span>Eat</span></a>
+      <ul class="nav-links">
+        <li>
+          <a href="menu.html"><i class="fa-solid fa-utensils"></i> Menu</a>
+        </li>
+        <li>
+          <a href="reserve.html" class="active-reserve"
+            ><i class="fa-solid fa-calendar"></i> Reserve</a
+          >
+        </li>
+        <li>
+          <a href="reviews.html"><i class="fa-solid fa-star"></i> Reviews</a>
+        </li>
+        <li>
+          <a href="menu.html" class="nav-cta">
+            <i class="fa-solid fa-bag-shopping"></i> Order Now
+          </a>
+        </li>
+      </ul>
+      <button class="hamburger" id="hamburger">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <button class="mobile-close" id="mobileClose">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <a href="menu.html" onclick="closeMobile()">Menu</a>
+      <a href="reserve.html" onclick="closeMobile()" class="active">Reserve</a>
+      <a href="reviews.html" onclick="closeMobile()">Reviews</a>
+      <a href="menu.html" onclick="closeMobile()">Order Now</a>
+    </div>
+
+    <!-- RESERVE HERO -->
+    <section class="reserve-hero">
+      <h1>Book Your <span>Table</span></h1>
+      <p>
+        Experience exquisite fine dining, vibrant atmospheres, and personalized
+        culinary services. Choose your experience, date, and space.
+      </p>
+    </section>
+
+    <!-- RESERVE CONTAINER -->
+    <section class="reserve-page-container">
+      <div class="reserve-grid-split">
+        <!-- Left: Form -->
+        <div class="booking-form-card">
+          <h2>Reservation Details</h2>
+          <form id="bookingForm" onsubmit="submitReservation(event)">
+            <!-- Guest Count Selector -->
+            <div class="form-group-custom">
+              <label class="form-label-custom">Number of Guests</label>
+              <div class="guests-pills-container" id="guestsContainer">
+                <button
+                  type="button"
+                  class="guest-pill-btn active"
+                  data-value="2"
+                >
+                  2
+                </button>
+                <button type="button" class="guest-pill-btn" data-value="3">
+                  3
+                </button>
+                <button type="button" class="guest-pill-btn" data-value="4">
+                  4
+                </button>
+                <button type="button" class="guest-pill-btn" data-value="5">
+                  5
+                </button>
+                <button type="button" class="guest-pill-btn" data-value="6">
+                  6
+                </button>
+                <button type="button" class="guest-pill-btn" data-value="7+">
+                  7+
+                </button>
+              </div>
+            </div>
+
+            <!-- Date Picker -->
+            <div class="form-group-custom">
+              <label class="form-label-custom" for="bookingDate"
+                >Select Date</label
+              >
+              <div class="form-input-wrap">
+                <i class="fa-solid fa-calendar-days"></i>
+                <input
+                  type="date"
+                  class="form-input-field"
+                  id="bookingDate"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Time Slots -->
+            <div class="form-group-custom">
+              <label class="form-label-custom">Select Time Slot</label>
+
+              <!-- Lunch Slots -->
+              <div class="time-session-group">
+                <div class="session-title">
+                  <i class="fa-regular fa-sun"></i> Lunch Session
+                </div>
+                <div class="slots-grid-layout" id="lunchSlots">
+                  <button
+                    type="button"
+                    class="slot-btn-item"
+                    data-time="12:00 PM"
+                  >
+                    12:00 PM
+                  </button>
+                  <button
+                    type="button"
+                    class="slot-btn-item"
+                    data-time="1:00 PM"
+                  >
+                    1:00 PM
+                  </button>
+                  <button
+                    type="button"
+                    class="slot-btn-item"
+                    data-time="2:00 PM"
+                  >
+                    2:00 PM
+                  </button>
+                  <button
+                    type="button"
+                    class="slot-btn-item"
+                    data-time="3:00 PM"
+                  >
+                    3:00 PM
+                  </button>
+                </div>
+              </div>
+
+              <!-- Dinner Slots -->
+              <div class="time-session-group">
+                <div class="session-title">
+                  <i class="fa-solid fa-moon"></i> Dinner Session
+                </div>
+                <div class="slots-grid-layout" id="dinnerSlots">
+                  <button
+                    type="button"
+                    class="slot-btn-item active"
+                    data-time="7:00 PM"
+                  >
+                    7:00 PM
+                  </button>
+                  <button
+                    type="button"
+                    class="slot-btn-item"
+                    data-time="8:00 PM"
+                  >
+                    8:00 PM
+                  </button>
+                  <button
+                    type="button"
+                    class="slot-btn-item"
+                    data-time="9:00 PM"
+                  >
+                    9:00 PM
+                  </button>
+                  <button
+                    type="button"
+                    class="slot-btn-item"
+                    data-time="10:00 PM"
+                  >
+                    10:00 PM
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Seating Preference -->
+            <div class="form-group-custom">
+              <label class="form-label-custom">Seating Preference</label>
+              <div class="seating-prefs-container" id="prefsContainer">
+                <button
+                  type="button"
+                  class="pref-pill-btn active"
+                  data-pref="No Preference"
+                >
+                  No Preference
+                </button>
+                <button
+                  type="button"
+                  class="pref-pill-btn"
+                  data-pref="Window View"
+                >
+                  Window View
+                </button>
+                <button
+                  type="button"
+                  class="pref-pill-btn"
+                  data-pref="Cozy Booth"
+                >
+                  Cozy Booth
+                </button>
+                <button
+                  type="button"
+                  class="pref-pill-btn"
+                  data-pref="Outdoor Patio"
+                >
+                  Outdoor Patio
+                </button>
+              </div>
+            </div>
+
+            <!-- Occasion -->
+            <div class="form-group-custom">
+              <label class="form-label-custom" for="bookingOccasion"
+                >Special Occasion</label
+              >
+              <div class="form-input-wrap">
+                <i class="fa-solid fa-cake-candles"></i>
+                <input
+                  type="text"
+                  class="form-input-field"
+                  id="bookingOccasion"
+                  placeholder="Anniversary, Birthday, Business (Optional)"
+                />
+              </div>
+            </div>
+
+            <!-- Guest Contact Info -->
+            <div class="form-row-split">
+              <div class="form-group-custom no-margin">
+                <label class="form-label-custom" for="guestName"
+                  >Full Name</label
+                >
+                <div class="form-input-wrap">
+                  <i class="fa-solid fa-user"></i>
+                  <input
+                    type="text"
+                    class="form-input-field"
+                    id="guestName"
+                    placeholder="Enter your name"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group-custom no-margin">
+                <label class="form-label-custom" for="guestPhone"
+                  >Phone Number</label
+                >
+                <div class="form-input-wrap">
+                  <i class="fa-solid fa-phone"></i>
+                  <input
+                    type="tel"
+                    class="form-input-field"
+                    id="guestPhone"
+                    placeholder="Enter 10-digit number"
+                    pattern="[0-9]{10}"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Email (Optional) -->
+            <div class="form-group-custom" style="margin-top: 1.5rem">
+              <label class="form-label-custom" for="guestEmail"
+                >Email Address</label
+              >
+              <div class="form-input-wrap">
+                <i class="fa-solid fa-envelope"></i>
+                <input
+                  type="email"
+                  class="form-input-field"
+                  id="guestEmail"
+                  placeholder="Enter email to receive receipt"
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" class="booking-submit-btn">
+              Confirm Reservation <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </form>
+        </div>
+
+        <!-- Right: Seating Zone Selection -->
+        <div class="dining-zones-panel">
+          <div class="zones-header">
+            <h2>Select Dining Zone</h2>
+            <p>Choose an ambience that matches your mood or occasion.</p>
+          </div>
+
+          <!-- Card 1 -->
+          <div
+            class="zone-selection-card selected"
+            data-zone="Grand Dining Hall"
+            onclick="selectZone(this)"
+          >
+            <div class="zone-card-img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500&auto=format&fit=crop"
+                alt="Grand Dining Hall"
+              />
+            </div>
+            <div class="zone-card-body-details">
+              <div class="zone-title-row">
+                <h3>The Grand Dining Hall</h3>
+                <div class="zone-select-checkbox">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+              </div>
+              <p class="zone-card-desc">
+                Classical grandeur, warm lighting, and traditional layouts.
+                Perfect for formal and family gatherings.
+              </p>
+              <div class="zone-card-tag-row">
+                <span class="zone-feature-tag">Classical Music</span>
+                <span class="zone-feature-tag">A/C Zone</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div
+            class="zone-selection-card"
+            data-zone="Glasshouse Terrace"
+            onclick="selectZone(this)"
+          >
+            <div class="zone-card-img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?w=500&auto=format&fit=crop"
+                alt="Glasshouse Terrace"
+              />
+            </div>
+            <div class="zone-card-body-details">
+              <div class="zone-title-row">
+                <h3>The Glasshouse Terrace</h3>
+                <div class="zone-select-checkbox">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+              </div>
+              <p class="zone-card-desc">
+                Lush vertical gardens under stargazing panels. Ideal for
+                romantic dates and modern casual meetups.
+              </p>
+              <div class="zone-card-tag-row">
+                <span class="zone-feature-tag">Open Air Vibe</span>
+                <span class="zone-feature-tag">Lounge Music</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div
+            class="zone-selection-card"
+            data-zone="Chef's Lounge"
+            onclick="selectZone(this)"
+          >
+            <div class="zone-card-img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop"
+                alt="Chef's Lounge"
+              />
+            </div>
+            <div class="zone-card-body-details">
+              <div class="zone-title-row">
+                <h3>The Chef's Lounge</h3>
+                <div class="zone-select-checkbox">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+              </div>
+              <p class="zone-card-desc">
+                Premium marble counter facing the live grill. Watch chefs cook
+                your personalized course menu.
+              </p>
+              <div class="zone-card-tag-row">
+                <span class="zone-feature-tag">Exclusive access</span>
+                <span class="zone-feature-tag">Live BBQ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUCCESS BOOKING MODAL -->
+    <div class="booking-success-overlay" id="bookingSuccessOverlay">
+      <div class="booking-receipt-card">
+        <div class="receipt-header">
+          <div class="receipt-success-icon">
+            <i class="fa-solid fa-calendar-check"></i>
+          </div>
+          <h2>Table Reserved!</h2>
+          <p id="receiptGuestEmail">Sent to priya@example.com</p>
+        </div>
+
+        <div class="receipt-body">
+          <div class="qr-code-wrapper">
+            <div class="simulated-qr"></div>
+            <span class="qr-code-label">Scan at Entry</span>
+          </div>
+
+          <div class="receipt-details-list">
+            <div class="receipt-row-item">
+              <span class="receipt-lbl">Confirmation Code</span>
+              <span class="receipt-val-highlight" id="receiptCode"
+                >LE-582136</span
+              >
+            </div>
+            <div class="receipt-row-item">
+              <span class="receipt-lbl">Guest Name</span>
+              <span class="receipt-val-highlight" id="receiptName"
+                >Priya Sen</span
+              >
+            </div>
+            <div class="receipt-row-item">
+              <span class="receipt-lbl">Table For</span>
+              <span class="receipt-val-highlight" id="receiptGuests"
+                >4 Guests</span
+              >
+            </div>
+            <div class="receipt-row-item">
+              <span class="receipt-lbl">Date & Time</span>
+              <span class="receipt-val-highlight" id="receiptDateTime"
+                >20 June, 8:00 PM</span
+              >
+            </div>
+            <div class="receipt-row-item">
+              <span class="receipt-lbl">Dining Zone</span>
+              <span class="receipt-val-highlight" id="receiptZone"
+                >Glasshouse Terrace</span
+              >
+            </div>
+            <div class="receipt-row-item">
+              <span class="receipt-lbl">Seat Pref / Occasion</span>
+              <span class="receipt-val-highlight" id="receiptPref"
+                >Window View / Anniversary</span
+              >
+            </div>
+          </div>
+
+          <div class="receipt-actions">
+            <button class="receipt-btn-primary" onclick="syncCalendar()">
+              <i class="fa-solid fa-clock"></i> Sync with Calendar
+            </button>
+            <button class="receipt-btn-secondary" onclick="closeReceipt()">
+              <i class="fa-solid fa-house"></i> Go to Homepage
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div>
+            <div class="footer-brand-name">Let's<span>Eat</span></div>
+            <p class="footer-desc">
+              Fresh food from the city's finest restaurants — delivered with
+              love and speed.
+            </p>
+            <div class="footer-socials">
+              <a href="#" class="social-btn"
+                ><i class="fa-brands fa-facebook-f"></i
+              ></a>
+              <a href="#" class="social-btn"
+                ><i class="fa-brands fa-x-twitter"></i
+              ></a>
+              <a href="#" class="social-btn"
+                ><i class="fa-brands fa-instagram"></i
+              ></a>
+              <a href="#" class="social-btn"
+                ><i class="fa-brands fa-linkedin-in"></i
+              ></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Press</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">Track Order</a></li>
+              <li><a href="#">Refund Policy</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>&copy; 2024 Let's Eat. All rights reserved.</span>
+          <span>Order from the best restaurants near you.</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- INTERACTION SCRIPTS -->
+    <script>
+      // 1. DATA STATE
+      let selectedGuests = "2";
+      let selectedTime = "7:00 PM";
+      let selectedPref = "No Preference";
+      let selectedDiningZone = "Grand Dining Hall";
+
+      // 2. INITIALIZATION
+      window.addEventListener("DOMContentLoaded", () => {
+        setupDatePicker();
+        bindInputControls();
+      });
+
+      // 3. SET DATE CONSTRAINTS
+      function setupDatePicker() {
+        const picker = document.getElementById("bookingDate");
+        const todayStr = new Date().toISOString().split("T")[0];
+        picker.setAttribute("min", todayStr);
+        picker.value = todayStr;
+      }
+
+      // 4. ACTION LISTENERS FOR PILLS/SLOTS
+      function bindInputControls() {
+        // Guest Count Pills
+        const guestBtns = document.querySelectorAll(
+          "#guestsContainer .guest-pill-btn",
+        );
+        guestBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            guestBtns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            selectedGuests = btn.getAttribute("data-value");
+          });
+        });
+
+        // Time Slot Items (Lunch + Dinner)
+        const timeSlots = document.querySelectorAll(".slot-btn-item");
+        timeSlots.forEach((slot) => {
+          slot.addEventListener("click", () => {
+            timeSlots.forEach((s) => s.classList.remove("active"));
+            slot.classList.add("active");
+            selectedTime = slot.getAttribute("data-time");
+          });
+        });
+
+        // Seating Preferences
+        const prefBtns = document.querySelectorAll(
+          "#prefsContainer .pref-pill-btn",
+        );
+        prefBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            prefBtns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            selectedPref = btn.getAttribute("data-pref");
+          });
+        });
+
+        // Hamburger Mobile Menu
+        const hamburger = document.getElementById("hamburger");
+        const mobileMenu = document.getElementById("mobileMenu");
+        const mobileClose = document.getElementById("mobileClose");
+
+        hamburger.addEventListener("click", () =>
+          mobileMenu.classList.add("open"),
+        );
+        mobileClose.addEventListener("click", () =>
+          mobileMenu.classList.remove("open"),
+        );
+      }
+
+      function closeMobile() {
+        document.getElementById("mobileMenu").classList.remove("open");
+      }
+
+      // 5. ZONE SELECTOR INTERACTIVE ACTION
+      function selectZone(card) {
+        const cards = document.querySelectorAll(".zone-selection-card");
+        cards.forEach((c) => c.classList.remove("selected"));
+        card.classList.add("selected");
+        selectedDiningZone = card.getAttribute("data-zone");
+      }
+
+      // 6. FORM SUBMISSION & RECEIPT
+      function submitReservation(event) {
+        event.preventDefault();
+
+        // Retrieve field values
+        const nameVal = document.getElementById("guestName").value.trim();
+        const phoneVal = document.getElementById("guestPhone").value.trim();
+        const emailVal = document.getElementById("guestEmail").value.trim();
+        const dateVal = document.getElementById("bookingDate").value;
+        const occasionVal = document
+          .getElementById("bookingOccasion")
+          .value.trim();
+
+        // Format Date for receipt
+        const dateObj = new Date(dateVal);
+        const options = { day: "numeric", month: "short", year: "numeric" };
+        const formattedDate = dateObj.toLocaleDateString("en-US", options);
+
+        // Generate Booking Receipt content
+        const codeNum = Math.floor(100000 + Math.random() * 900000);
+        document.getElementById("receiptCode").textContent = `LE-${codeNum}`;
+        document.getElementById("receiptGuestEmail").textContent =
+          `Sent to ${emailVal}`;
+        document.getElementById("receiptName").textContent = nameVal;
+        document.getElementById("receiptGuests").textContent =
+          `${selectedGuests} Guests`;
+        document.getElementById("receiptDateTime").textContent =
+          `${formattedDate} at ${selectedTime}`;
+        document.getElementById("receiptZone").textContent = selectedDiningZone;
+
+        const suffix = occasionVal ? ` / ${occasionVal}` : "";
+        document.getElementById("receiptPref").textContent =
+          `${selectedPref}${suffix}`;
+
+        // Open Overlay Modal
+        document.getElementById("bookingSuccessOverlay").classList.add("open");
+      }
+
+      // Receipt Actions
+      function syncCalendar() {
+        alert("Event synchronized successfully with Google Calendar!");
+      }
+
+      function closeReceipt() {
+        document
+          .getElementById("bookingSuccessOverlay")
+          .classList.remove("open");
+        // Clear Form fields
+        document.getElementById("bookingForm").reset();
+        setupDatePicker();
+        // Reset state classes
+        resetActiveSelectionStates();
+        // Redirect to homepage
+        window.location.href = "index.html";
+      }
+
+      function resetActiveSelectionStates() {
+        // Guests
+        const guestBtns = document.querySelectorAll(
+          "#guestsContainer .guest-pill-btn",
+        );
+        guestBtns.forEach((b) => b.classList.remove("active"));
+        guestBtns[0].classList.add("active");
+        selectedGuests = "2";
+
+        // Time slots
+        const timeSlots = document.querySelectorAll(".slot-btn-item");
+        timeSlots.forEach((s) => s.classList.remove("active"));
+        const defaultSlot = document.querySelector(
+          ".slot-btn-item[data-time='7:00 PM']",
+        );
+        if (defaultSlot) defaultSlot.classList.add("active");
+        selectedTime = "7:00 PM";
+
+        // Prefs
+        const prefBtns = document.querySelectorAll(
+          "#prefsContainer .pref-pill-btn",
+        );
+        prefBtns.forEach((b) => b.classList.remove("active"));
+        prefBtns[0].classList.add("active");
+        selectedPref = "No Preference";
+
+        // Zones
+        const cards = document.querySelectorAll(".zone-selection-card");
+        cards.forEach((c) => c.classList.remove("selected"));
+        cards[0].classList.add("selected");
+        selectedDiningZone = "Grand Dining Hall";
+      }
+    </script>
+  </body>
+</html>

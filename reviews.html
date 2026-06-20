@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reviews - Let's Eat</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <a href="index.html" class="nav-logo">Let's<span>Eat</span></a>
+      <ul class="nav-links">
+        <li>
+          <a href="menu.html"><i class="fa-solid fa-utensils"></i> Menu</a>
+        </li>
+        <li>
+          <a href="reserve.html"
+            ><i class="fa-solid fa-calendar"></i> Reserve</a
+          >
+        </li>
+        <li>
+          <a href="reviews.html" class="active-reviews"
+            ><i class="fa-solid fa-star"></i> Reviews</a
+          >
+        </li>
+        <li>
+          <a href="menu.html" class="nav-cta">
+            <i class="fa-solid fa-bag-shopping"></i> Order Now
+          </a>
+        </li>
+      </ul>
+      <button class="hamburger" id="hamburger">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <button class="mobile-close" id="mobileClose">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <a href="menu.html" onclick="closeMobile()">Menu</a>
+      <a href="reserve.html" onclick="closeMobile()">Reserve</a>
+      <a href="reviews.html" onclick="closeMobile()" class="active">Reviews</a>
+      <a href="menu.html" onclick="closeMobile()">Order Now</a>
+    </div>
+
+    <!-- REVIEWS HERO -->
+    <section class="reviews-hero">
+      <h1>Guest <span>Reviews</span></h1>
+      <p>
+        Real experiences from our dine-in guests and delivery food lovers. We
+        take pride in crafting memories and flavors.
+      </p>
+    </section>
+
+    <!-- MAIN PAGE WRAPPER -->
+    <section class="reviews-page-container">
+      <!-- RATINGS DASHBOARD -->
+      <div class="reviews-dashboard">
+        <!-- Average Score Box -->
+        <div class="dashboard-card">
+          <div class="score-display-box">
+            <div class="score-num" id="avgScoreNum">4.9</div>
+            <div class="score-stars" id="avgScoreStars">
+              <!-- Rendered Stars -->
+            </div>
+            <div class="score-total-count" id="totalReviewsCount">
+              Based on 145 reviews
+            </div>
+          </div>
+        </div>
+
+        <!-- Rating progress bars distribution -->
+        <div class="dashboard-card">
+          <div class="rating-bars-container" id="ratingBarsContainer">
+            <!-- Rendered Rating distribution rows (5-star down to 1-star) -->
+          </div>
+        </div>
+
+        <!-- Attribute Breakdown & CTA -->
+        <div class="dashboard-card write-cta-card">
+          <h3>Share Your Vibes</h3>
+          <p>
+            Loved a particular dish, or had an excellent evening on our patio?
+            Let us know!
+          </p>
+          <button class="write-review-btn" onclick="toggleReviewModal(true)">
+            Write a Review <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- REVIEWS FEED SPLIT -->
+      <div class="reviews-feed-section">
+        <!-- Sidebar filters and controls -->
+        <aside class="reviews-sidebar-controls">
+          <!-- Filter by Rating -->
+          <div class="sidebar-control-group">
+            <h4>Filter by Star</h4>
+            <div class="reviews-filter-pills" id="starPillsContainer">
+              <button class="reviews-filter-pill-btn active" data-rating="all">
+                All Stars <span class="badge" id="badgeAll">0</span>
+              </button>
+              <button class="reviews-filter-pill-btn" data-rating="5">
+                5 Stars ★ <span class="badge" id="badge5">0</span>
+              </button>
+              <button class="reviews-filter-pill-btn" data-rating="4">
+                4 Stars ★ <span class="badge" id="badge4">0</span>
+              </button>
+              <button class="reviews-filter-pill-btn" data-rating="3">
+                3 Stars ★ <span class="badge" id="badge3">0</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter by Vibe/Experience type -->
+          <div class="sidebar-control-group">
+            <h4>Experience Type</h4>
+            <div class="reviews-filter-pills" id="tagPillsContainer">
+              <button class="reviews-filter-pill-btn active" data-tag="all">
+                All Experiences
+              </button>
+              <button class="reviews-filter-pill-btn" data-tag="dine-in">
+                Dine-In only
+              </button>
+              <button class="reviews-filter-pill-btn" data-tag="delivery">
+                Delivery only
+              </button>
+            </div>
+          </div>
+
+          <!-- Sort Select -->
+          <div class="sidebar-control-group">
+            <h4>Sort Feed</h4>
+            <select class="reviews-sort-select" id="sortReviewsSelect">
+              <option value="recent">Most Recent</option>
+              <option value="highest">Highest Rating</option>
+              <option value="lowest">Lowest Rating</option>
+              <option value="helpful">Most Helpful</option>
+            </select>
+          </div>
+        </aside>
+
+        <!-- Reviews Card List -->
+        <main class="reviews-cards-list" id="reviewsCardsList">
+          <!-- Rendered reviews cards here -->
+        </main>
+      </div>
+    </section>
+
+    <!-- WRITE REVIEW OVERLAY MODAL -->
+    <div
+      class="write-review-overlay"
+      id="writeReviewOverlay"
+      onclick="closeReviewModalBackdrop(event)"
+    >
+      <div class="write-review-card">
+        <div class="write-review-header">
+          <h2>Write a Review</h2>
+          <button
+            class="write-review-close-btn"
+            onclick="toggleReviewModal(false)"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="write-review-body">
+          <form id="reviewForm" onsubmit="submitReview(event)">
+            <!-- Stars Interactive Selector -->
+            <div class="star-selector-wrapper">
+              <span class="star-selector-label">Tap to Rate</span>
+              <div class="interactive-stars-row" id="starsRow">
+                <i
+                  class="fa-solid fa-star star-select-icon selected"
+                  data-value="1"
+                ></i>
+                <i
+                  class="fa-solid fa-star star-select-icon selected"
+                  data-value="2"
+                ></i>
+                <i
+                  class="fa-solid fa-star star-select-icon selected"
+                  data-value="3"
+                ></i>
+                <i
+                  class="fa-solid fa-star star-select-icon selected"
+                  data-value="4"
+                ></i>
+                <i
+                  class="fa-solid fa-star star-select-icon selected"
+                  data-value="5"
+                ></i>
+              </div>
+            </div>
+
+            <!-- Name Input -->
+            <div class="form-group-custom">
+              <label class="form-label-custom" for="reviewerName"
+                >Your Name</label
+              >
+              <div class="form-input-wrap">
+                <i class="fa-solid fa-user"></i>
+                <input
+                  type="text"
+                  class="form-input-field"
+                  id="reviewerName"
+                  placeholder="Enter your name"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Experience Type Pills -->
+            <div class="form-group-custom">
+              <label class="form-label-custom">Dining Experience</label>
+              <div class="experience-selection-row" id="expContainer">
+                <button
+                  type="button"
+                  class="experience-option-pill active"
+                  data-type="dine-in"
+                >
+                  Dine-In
+                </button>
+                <button
+                  type="button"
+                  class="experience-option-pill"
+                  data-type="delivery"
+                >
+                  Delivery
+                </button>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group-custom">
+              <label class="form-label-custom" for="reviewText"
+                >Review Details</label
+              >
+              <textarea
+                class="textarea-custom"
+                id="reviewText"
+                placeholder="What did you order? How did it taste? Tell us about your service..."
+                maxlength="500"
+                required
+              ></textarea>
+              <div class="character-counter-row">
+                <span id="charCount">0</span> / 500 characters
+              </div>
+            </div>
+
+            <button type="submit" class="submit-review-action-btn">
+              Submit Review
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div>
+            <div class="footer-brand-name">Let's<span>Eat</span></div>
+            <p class="footer-desc">
+              Fresh food from the city's finest restaurants — delivered with
+              love and speed.
+            </p>
+            <div class="footer-socials">
+              <a href="#" class="social-btn"
+                ><i class="fa-brands fa-facebook-f"></i
+              ></a>
+              <a href="#" class="social-btn"
+                ><i class="fa-brands fa-x-twitter"></i
+              ></a>
+              <a href="#" class="social-btn"
+                ><i class="fa-brands fa-instagram"></i
+              ></a>
+              <a href="#" class="social-btn"
+                ><i class="fa-brands fa-linkedin-in"></i
+              ></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Press</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">Track Order</a></li>
+              <li><a href="#">Refund Policy</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>&copy; 2024 Let's Eat. All rights reserved.</span>
+          <span>Order from the best restaurants near you.</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- INTERACTION LOGIC SCRIPTS -->
+    <script>
+      // 1. DATASET
+      const DEFAULT_REVIEWS = [
+        {
+          id: "rev-1",
+          author: "Priya S.",
+          avatarBg: "#e8531a",
+          rating: 5,
+          date: "2 hours ago",
+          timestamp: Date.now() - 7200000,
+          type: "delivery",
+          text: "The biryani was extraordinary. Delivered hot in under 25 minutes — I'm genuinely impressed every single time. The grains are separate, spices are flavorful, and chicken is tender.",
+          dishes: ["Hyderabadi Chicken Biryani"],
+          helpfulCount: 14,
+          helpfulClicked: false,
+          verified: true,
+        },
+        {
+          id: "rev-2",
+          author: "Arjun & Meena",
+          avatarBg: "#ff6b35",
+          rating: 5,
+          date: "Yesterday",
+          timestamp: Date.now() - 86400000,
+          type: "dine-in",
+          text: "Booked a table for our anniversary and the experience was flawless. The Glasshouse Terrace zone has romantic lighting, and the crew made everything feel special and effortless. Highly recommend booking early!",
+          dishes: ["Paneer Butter Masala", "Classic Butter Chicken"],
+          helpfulCount: 8,
+          helpfulClicked: false,
+          verified: true,
+        },
+        {
+          id: "rev-3",
+          author: "Kavya R.",
+          avatarBg: "#2e2010",
+          rating: 4,
+          date: "3 days ago",
+          timestamp: Date.now() - 259200000,
+          type: "dine-in",
+          text: "Desserts deserve their own rating — five stars just isn't enough. The velvet cake is criminally good. Ambience is spectacular. Service was slightly delayed but the cake compensated for it.",
+          dishes: ["Black Velvet Cake (Slice)", "Molten Chocolate Lava"],
+          helpfulCount: 5,
+          helpfulClicked: false,
+          verified: true,
+        },
+        {
+          id: "rev-4",
+          author: "Rohan Sharma",
+          avatarBg: "#6b5b45",
+          rating: 5,
+          date: "4 days ago",
+          timestamp: Date.now() - 345600000,
+          type: "delivery",
+          text: "Tried the Double Cheese Roll and Cold Brew Coffee. Extremely fresh paratha wrapping, rich mozzarella, and the cold brew was robust yet smooth. Prompt delivery.",
+          dishes: ["Double Cheese Roll", "Cold Brew Coffee"],
+          helpfulCount: 12,
+          helpfulClicked: false,
+          verified: true,
+        },
+        {
+          id: "rev-5",
+          author: "Michael G.",
+          avatarBg: "#d97706",
+          rating: 3,
+          date: "1 week ago",
+          timestamp: Date.now() - 604800000,
+          type: "dine-in",
+          text: "The dining ambience in Grand Dining Hall is spectacular. However, they were understaffed on Friday evening, so our butter chicken tikka took 45 minutes to arrive. Food was delicious, but they need to speed up service.",
+          dishes: ["Classic Butter Chicken"],
+          helpfulCount: 9,
+          helpfulClicked: false,
+          verified: false,
+        },
+      ];
+
+      let reviews = [];
+      let activeFilterRating = "all";
+      let activeFilterTag = "all";
+      let activeSort = "recent";
+      let ratingInput = 5;
+      let experienceInput = "dine-in";
+
+      // HSL Palette Generator
+      const colors = [
+        "#e8531a",
+        "#ff6b35",
+        "#2e2010",
+        "#d97706",
+        "#059669",
+        "#dc2626",
+        "#4f46e5",
+      ];
+
+      // 2. INITIALIZATION
+      window.addEventListener("DOMContentLoaded", () => {
+        // Load reviews from localStorage or fallback to defaults
+        const storedReviews = localStorage.getItem("letsEatReviews");
+        if (storedReviews) {
+          reviews = JSON.parse(storedReviews);
+        } else {
+          reviews = [...DEFAULT_REVIEWS];
+          localStorage.setItem("letsEatReviews", JSON.stringify(reviews));
+        }
+
+        renderDashboard();
+        renderReviewsFeed();
+        bindInputControls();
+      });
+
+      // 3. EVENT BINDINGS
+      function bindInputControls() {
+        // Star Filter pills
+        const starBtns = document.querySelectorAll(
+          "#starPillsContainer .reviews-filter-pill-btn",
+        );
+        starBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            starBtns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            activeFilterRating = btn.getAttribute("data-rating");
+            renderReviewsFeed();
+          });
+        });
+
+        // Tag Filter pills
+        const tagBtns = document.querySelectorAll(
+          "#tagPillsContainer .reviews-filter-pill-btn",
+        );
+        tagBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            tagBtns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            activeFilterTag = btn.getAttribute("data-tag");
+            renderReviewsFeed();
+          });
+        });
+
+        // Sort Selector
+        document
+          .getElementById("sortReviewsSelect")
+          .addEventListener("change", (e) => {
+            activeSort = e.target.value;
+            renderReviewsFeed();
+          });
+
+        // Modal Form Character Counter
+        const textarea = document.getElementById("reviewText");
+        textarea.addEventListener("input", (e) => {
+          document.getElementById("charCount").textContent =
+            e.target.value.length;
+        });
+
+        // Form Interactive Stars Selector
+        const starIcons = document.querySelectorAll(
+          "#starsRow .star-select-icon",
+        );
+        starIcons.forEach((star) => {
+          // Hover enter
+          star.addEventListener("mouseenter", () => {
+            const val = parseInt(star.getAttribute("data-value"));
+            highlightModalStars(val);
+          });
+
+          // Hover leave (reset to locked selection ratingInput)
+          star.addEventListener("mouseleave", () => {
+            highlightModalStars(ratingInput);
+          });
+
+          // Click to Lock
+          star.addEventListener("click", () => {
+            ratingInput = parseInt(star.getAttribute("data-value"));
+            highlightModalStars(ratingInput);
+          });
+        });
+
+        // Form Experience Pills Select
+        const expBtns = document.querySelectorAll(
+          "#expContainer .experience-option-pill",
+        );
+        expBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            expBtns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            experienceInput = btn.getAttribute("data-type");
+          });
+        });
+
+        // Hamburger Mobile Menu
+        const hamburger = document.getElementById("hamburger");
+        const mobileMenu = document.getElementById("mobileMenu");
+        const mobileClose = document.getElementById("mobileClose");
+
+        hamburger.addEventListener("click", () =>
+          mobileMenu.classList.add("open"),
+        );
+        mobileClose.addEventListener("click", () =>
+          mobileMenu.classList.remove("open"),
+        );
+      }
+
+      function closeMobile() {
+        document.getElementById("mobileMenu").classList.remove("open");
+      }
+
+      function highlightModalStars(val) {
+        const starIcons = document.querySelectorAll(
+          "#starsRow .star-select-icon",
+        );
+        starIcons.forEach((star, idx) => {
+          if (idx < val) {
+            star.classList.add("selected");
+          } else {
+            star.classList.remove("selected");
+          }
+        });
+      }
+
+      // 4. STATS CALCULATIONS & DASHBOARD RENDER
+      function renderDashboard() {
+        const total = reviews.length;
+        if (total === 0) return;
+
+        // Calculate Average
+        const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
+        const avg = (sum / total).toFixed(1);
+
+        document.getElementById("avgScoreNum").textContent = avg;
+
+        // Render Score stars
+        const fullStarsCount = Math.round(avg);
+        const starsHtml =
+          Array(fullStarsCount)
+            .fill('<i class="fa-solid fa-star"></i>')
+            .join("") +
+          Array(5 - fullStarsCount)
+            .fill('<i class="fa-regular fa-star"></i>')
+            .join("");
+        document.getElementById("avgScoreStars").innerHTML = starsHtml;
+        document.getElementById("totalReviewsCount").textContent =
+          `Based on ${total} review${total > 1 ? "s" : ""}`;
+
+        // Calculate distribution
+        const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+        reviews.forEach((r) => {
+          if (counts[r.rating] !== undefined) counts[r.rating]++;
+        });
+
+        // Render Distribution Bars
+        const barsContainer = document.getElementById("ratingBarsContainer");
+        barsContainer.innerHTML = "";
+
+        for (let star = 5; star >= 1; star--) {
+          const count = counts[star];
+          const percent = total > 0 ? Math.round((count / total) * 100) : 0;
+
+          const barRow = document.createElement("div");
+          barRow.className = "rating-bar-row";
+          barRow.innerHTML = `
+            <span class="rating-bar-lbl">${star} Star</span>
+            <div class="rating-progress-track">
+              <div class="rating-progress-fill" style="width: ${percent}%"></div>
+            </div>
+            <span class="rating-bar-percent">${percent}%</span>
+          `;
+          barsContainer.appendChild(barRow);
+        }
+
+        // Set Side Badge Counts
+        document.getElementById("badgeAll").textContent = total;
+        document.getElementById("badge5").textContent = counts[5];
+        document.getElementById("badge4").textContent = counts[4];
+        document.getElementById("badge3").textContent = counts[3];
+      }
+
+      // 5. RENDER REVIEWS FEED
+      function renderReviewsFeed() {
+        const feed = document.getElementById("reviewsCardsList");
+        feed.innerHTML = "";
+
+        // Filter items
+        let filteredReviews = reviews.filter((r) => {
+          const matchesStar =
+            activeFilterRating === "all" ||
+            r.rating.toString() === activeFilterRating;
+          const matchesTag =
+            activeFilterTag === "all" || r.type === activeFilterTag;
+          return matchesStar && matchesTag;
+        });
+
+        // Sort items
+        if (activeSort === "recent") {
+          filteredReviews.sort((a, b) => b.timestamp - a.timestamp);
+        } else if (activeSort === "highest") {
+          filteredReviews.sort(
+            (a, b) => b.rating - a.rating || b.timestamp - a.timestamp,
+          );
+        } else if (activeSort === "lowest") {
+          filteredReviews.sort(
+            (a, b) => a.rating - b.rating || b.timestamp - a.timestamp,
+          );
+        } else if (activeSort === "helpful") {
+          filteredReviews.sort(
+            (a, b) =>
+              b.helpfulCount - a.helpfulCount || b.timestamp - a.timestamp,
+          );
+        }
+
+        // Output Cards
+        if (filteredReviews.length === 0) {
+          feed.innerHTML = `
+            <div class="no-results" style="background: var(--white);">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <h3>No reviews match filters</h3>
+              <p>Try selecting another star rating or reset filters to explore feedback.</p>
+            </div>
+          `;
+          return;
+        }
+
+        filteredReviews.forEach((r) => {
+          const card = document.createElement("div");
+          card.className = "review-feed-card";
+
+          // Get initials
+          const nameParts = r.author.trim().split(" ");
+          const initials =
+            nameParts.length > 1
+              ? (
+                  nameParts[0][0] + nameParts[nameParts.length - 1][0]
+                ).toUpperCase()
+              : nameParts[0].slice(0, 2).toUpperCase();
+
+          const starsHtml =
+            Array(r.rating).fill('<i class="fa-solid fa-star"></i>').join("") +
+            Array(5 - r.rating)
+              .fill('<i class="fa-regular fa-star"></i>')
+              .join("");
+
+          const typeLabel = r.type === "dine-in" ? "Dine-In" : "Delivery";
+          const typeClass = r.type === "dine-in" ? "dine-in" : "delivery";
+          const verifiedHtml = r.verified
+            ? `<div class="review-verified-badge"><i class="fa-solid fa-circle-check"></i> Verified Guest</div>`
+            : "";
+
+          // Dishes Enjoyed Tags
+          const dishesHtml =
+            r.dishes && r.dishes.length > 0
+              ? `<div class="review-ordered-dishes">
+                ${r.dishes.map((d) => `<span class="review-dish-tag">${d}</span>`).join("")}
+               </div>`
+              : "";
+
+          const helpfulActive = r.helpfulClicked ? "active" : "";
+
+          card.innerHTML = `
+            <div class="review-card-header">
+              <div class="review-author-profile">
+                <div class="review-author-avatar" style="background-color: ${r.avatarBg}">${initials}</div>
+                <div>
+                  <div class="review-author-name">${r.author}</div>
+                  ${verifiedHtml}
+                </div>
+              </div>
+              <div class="review-date-info">${r.date}</div>
+            </div>
+
+            <div class="review-rating-line">
+              <div class="review-stars-display">${starsHtml}</div>
+              <span class="review-experience-tag ${typeClass}">${typeLabel}</span>
+            </div>
+
+            <p class="review-text-content">${r.text}</p>
+
+            ${dishesHtml}
+
+            <div class="review-helpful-action-bar">
+              <button class="helpful-thumbs-btn ${helpfulActive}" onclick="toggleHelpful(event, '${r.id}')">
+                <i class="fa-regular fa-thumbs-up"></i> Helpful (${r.helpfulCount})
+              </button>
+            </div>
+          `;
+          feed.appendChild(card);
+        });
+      }
+
+      // 6. HELP-FUL INCREMENTOR
+      function toggleHelpful(event, reviewId) {
+        const btn = event.currentTarget;
+        const reviewIndex = reviews.findIndex((r) => r.id === reviewId);
+        if (reviewIndex > -1) {
+          const review = reviews[reviewIndex];
+          if (review.helpfulClicked) {
+            review.helpfulCount--;
+            review.helpfulClicked = false;
+            btn.classList.remove("active");
+          } else {
+            review.helpfulCount++;
+            review.helpfulClicked = true;
+            btn.classList.add("active");
+          }
+          localStorage.setItem("letsEatReviews", JSON.stringify(reviews));
+          renderReviewsFeed();
+        }
+      }
+
+      // 7. WRITE REVIEW MODAL OPEN/CLOSE
+      function toggleReviewModal(show) {
+        const modal = document.getElementById("writeReviewOverlay");
+        if (show) {
+          modal.classList.add("open");
+        } else {
+          modal.classList.remove("open");
+        }
+      }
+
+      function closeReviewModalBackdrop(event) {
+        if (event.target.id === "writeReviewOverlay") {
+          toggleReviewModal(false);
+        }
+      }
+
+      // 8. REVIEW FORM SUBMISSION
+      function submitReview(event) {
+        event.preventDefault();
+
+        const nameInput = document.getElementById("reviewerName").value.trim();
+        const textInput = document.getElementById("reviewText").value.trim();
+
+        if (textInput.length < 10) {
+          alert("Review details must be at least 10 characters long.");
+          return;
+        }
+
+        // Create new review object
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        const newReview = {
+          id: `rev-custom-${Math.floor(Math.random() * 10000)}`,
+          author: nameInput,
+          avatarBg: randomColor,
+          rating: ratingInput,
+          date: "Just now",
+          timestamp: Date.now(),
+          type: experienceInput,
+          text: textInput,
+          dishes: [], // no initial tags
+          helpfulCount: 0,
+          helpfulClicked: false,
+          verified: false, // custom guest reviewer
+        };
+
+        // Add to state and save
+        reviews.unshift(newReview);
+        localStorage.setItem("letsEatReviews", JSON.stringify(reviews));
+
+        // Sync & Render
+        renderDashboard();
+        renderReviewsFeed();
+
+        // Reset Form Fields
+        document.getElementById("reviewForm").reset();
+        document.getElementById("charCount").textContent = "0";
+        ratingInput = 5;
+        highlightModalStars(5);
+        experienceInput = "dine-in";
+        const expBtns = document.querySelectorAll(
+          "#expContainer .experience-option-pill",
+        );
+        expBtns.forEach((b) => b.classList.remove("active"));
+        expBtns[0].classList.add("active");
+
+        // Close Modal
+        toggleReviewModal(false);
+      }
+    </script>
+  </body>
+</html>
