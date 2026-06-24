@@ -20,22 +20,16 @@
       <a href="index.html" class="nav-logo">Let's<span>Eat</span></a>
       <ul class="nav-links">
         <li>
-          <a href="menu.html" class="active"
-            ><i class="fa-solid fa-utensils"></i> Menu</a
-          >
+          <a href="menu.html" class="active">Menu</a>
         </li>
         <li>
-          <a href="reserve.html"
-            ><i class="fa-solid fa-calendar"></i> Reserve</a
-          >
+          <a href="reserve.html">Reserve</a>
         </li>
         <li>
-          <a href="reviews.html"><i class="fa-solid fa-star"></i> Reviews</a>
+          <a href="reviews.html">Reviews</a>
         </li>
         <li>
-          <a href="#" class="nav-cta" id="navOrderBtn">
-            <i class="fa-solid fa-bag-shopping"></i> Order Now
-          </a>
+          <a href="#" class="nav-cta" id="navOrderBtn">Order Now</a>
         </li>
       </ul>
       <button class="hamburger" id="hamburger">
@@ -45,9 +39,14 @@
 
     <!-- MOBILE MENU -->
     <div class="mobile-menu" id="mobileMenu">
-      <button class="mobile-close" id="mobileClose">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
+      <div class="mobile-menu-header">
+        <a href="index.html" class="nav-logo" onclick="closeMobile()"
+          >Let's<span>Eat</span></a
+        >
+        <button class="mobile-close" id="mobileClose">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
       <a href="menu.html" onclick="closeMobile()" class="active">Menu</a>
       <a href="reserve.html" onclick="closeMobile()">Reserve</a>
       <a href="reviews.html" onclick="closeMobile()">Reviews</a>
